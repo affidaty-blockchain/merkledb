@@ -13,12 +13,15 @@
 // limitations under the License.
 
 use byteorder::{ByteOrder, LittleEndian};
-use merkledb_crypto::{hash, Hash, HashStream, HASH_SIZE};
 use thiserror::Error;
 
 use std::error::Error as StdError;
 
-use crate::{proof_map::ProofPath, BinaryValue};
+use crate::{
+    crypto::{hash, Hash, HashStream, HASH_SIZE},
+    proof_map::ProofPath,
+    BinaryValue,
+};
 
 // "c6c0aa07f27493d2f2e5cff56c890a353a20086d6c25ec825128e12ae752b2d9" in hex.
 const EMPTY_LIST_HASH: [u8; HASH_SIZE] = [
@@ -274,9 +277,8 @@ pub enum ValidationError<E: StdError + 'static> {
 
 #[cfg(test)]
 mod tests {
-    use merkledb_crypto::{Hash, HashStream};
-
     use super::{hash, HashTag, ProofPath, HASH_SIZE};
+    use crate::crypto::{Hash, HashStream};
 
     #[test]
     fn empty_list_hash() {

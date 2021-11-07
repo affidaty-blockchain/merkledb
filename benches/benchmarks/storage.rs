@@ -18,8 +18,11 @@ use criterion::{
 use rand::{rngs::StdRng, Rng, RngCore, SeedableRng};
 use std::collections::HashSet;
 
-use merkledb::{access::CopyAccessExt, Fork, ListIndex, MapIndex, ObjectHash};
-use merkledb_crypto::{Hash, HASH_SIZE as KEY_SIZE};
+use merkledb::{
+    access::CopyAccessExt,
+    crypto::{self, Hash, HASH_SIZE as KEY_SIZE},
+    Fork, ListIndex, MapIndex, ObjectHash,
+};
 
 use super::BenchDB;
 
@@ -432,7 +435,7 @@ fn bench_index_clearing(bencher: &mut Bencher<'_>) {
 }
 
 pub fn bench_storage(c: &mut Criterion) {
-    merkledb_crypto::init();
+    crypto::init();
 
     // MapIndex
     bench_fn(c, "storage/plain_map/insert", plain_map_index_insert);

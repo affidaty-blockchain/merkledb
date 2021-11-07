@@ -14,12 +14,10 @@
 
 //! Building `ListProof`s.
 
-use merkledb_crypto::Hash;
-
 use std::ops::{Bound, RangeBounds};
 
 use super::{key::ProofListKey, tree_height_by_length, ListProof};
-use crate::BinaryValue;
+use crate::{crypto::Hash, BinaryValue};
 
 /// Encapsulation of a binary Merkle tree allowing to access its terminal and intermediate
 /// nodes.

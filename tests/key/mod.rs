@@ -12,8 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use merkledb::{BinaryKey, ObjectHash};
-use merkledb_crypto::{hash, Hash, HASH_SIZE};
+use merkledb::{
+    crypto::{hash, Hash, HASH_SIZE},
+    BinaryKey, ObjectHash,
+};
 
 #[derive(Debug, Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
 pub struct Key(pub [u8; HASH_SIZE]);

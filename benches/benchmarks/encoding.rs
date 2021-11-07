@@ -19,8 +19,10 @@ use byteorder::{ByteOrder, LittleEndian, ReadBytesExt, WriteBytesExt};
 use criterion::{black_box, Bencher, Criterion};
 use rand::{rngs::StdRng, RngCore, SeedableRng};
 
-use merkledb::{impl_object_hash_for_binary_value, BinaryKey, BinaryValue, ObjectHash};
-use merkledb_crypto::{self, hash, Hash};
+use merkledb::{
+    crypto::{self, hash, Hash},
+    impl_object_hash_for_binary_value, BinaryKey, BinaryValue, ObjectHash,
+};
 
 const CHUNK_SIZE: usize = 64;
 const SEED: [u8; 32] = [100; 32];
@@ -116,7 +118,7 @@ fn gen_sample_data() -> SimpleData {
         id: 1,
         class: -5,
         value: 2127,
-        hash: merkledb_crypto::hash(&[1, 2, 3]),
+        hash: crypto::hash(&[1, 2, 3]),
     })
 }
 
@@ -125,7 +127,7 @@ fn gen_cursor_data() -> CursorData {
         id: 1,
         class: -5,
         value: 2127,
-        hash: merkledb_crypto::hash(&[1, 2, 3]),
+        hash: crypto::hash(&[1, 2, 3]),
     })
 }
 
@@ -192,7 +194,7 @@ fn bench_binary_key_concat(b: &mut Bencher<'_>) {
 }
 
 pub fn bench_encoding(c: &mut Criterion) {
-    merkledb_crypto::init();
+    crypto::init();
     bench_binary_value(c, "bytes", gen_bytes_data);
     bench_binary_value(c, "simple", gen_sample_data);
     bench_binary_value(c, "cursor", gen_cursor_data);

@@ -165,11 +165,11 @@
 #[macro_use]
 extern crate serde_derive;
 
-// Re-export the crypto crate for use in the `ObjectHash` derive macro.
 #[doc(hidden)]
 pub mod _reexports {
+    // Re-export the crypto crate for use in the `ObjectHash` derive macro.
+    pub use crate::crypto::{hash, Hash};
     pub use anyhow::Error;
-    pub use merkledb_crypto::{hash, Hash};
 }
 
 pub use self::{
@@ -199,6 +199,7 @@ pub use self::indexes::{
 mod macros;
 pub mod access;
 mod backends;
+pub mod crypto;
 mod db;
 mod error;
 pub mod generic;

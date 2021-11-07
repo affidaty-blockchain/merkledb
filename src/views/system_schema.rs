@@ -13,10 +13,10 @@
 // limitations under the License.
 
 use crate::{
+    crypto::Hash,
     views::{AsReadonly, IndexType, RawAccess, ViewWithMetadata},
     Fork, ObjectHash, ProofMapIndex,
 };
-use merkledb_crypto::Hash;
 
 /// Name of the state aggregator proof map.
 const STATE_AGGREGATOR: &str = "__STATE_AGGREGATOR__";

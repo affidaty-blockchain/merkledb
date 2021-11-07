@@ -19,9 +19,9 @@ use serde_derive::{Deserialize, Serialize};
 
 use merkledb::{
     access::{Access, AccessExt, FromAccess, Prefixed, RawAccessMut},
+    crypto::{self, Hash},
     Group, KeySetIndex, Lazy, MapIndex, ObjectHash, ProofListIndex, ProofMapIndex,
 };
-use merkledb_crypto::Hash;
 
 use super::BenchDB;
 
@@ -282,7 +282,7 @@ fn bench<T: ExecuteTransaction>(bencher: &mut Bencher<'_>, prefixed: bool) {
 }
 
 pub fn bench_schema_patterns(c: &mut Criterion) {
-    merkledb_crypto::init();
+    crypto::init();
 
     let mut group = c.benchmark_group("schema_patterns");
     group.bench_function("eager", |b| bench::<EagerStyle>(b, false));

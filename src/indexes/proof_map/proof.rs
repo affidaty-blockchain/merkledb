@@ -14,7 +14,6 @@
 
 pub use crate::ValidationError;
 
-use merkledb_crypto::Hash;
 use serde::{Deserializer, Serializer};
 use serde_derive::{Deserialize, Serialize};
 use thiserror::Error;
@@ -25,7 +24,7 @@ use super::{
     key::{BitsRange, ChildKind, ProofPath, KEY_SIZE},
     node::BranchNode,
 };
-use crate::{BinaryValue, HashTag, ObjectHash};
+use crate::{crypto::Hash, BinaryValue, HashTag, ObjectHash};
 
 use crate::indexes::proof_map::key::{Hashed, ToProofPath};
 
@@ -195,8 +194,8 @@ impl<K, V> OptionalEntry<K, V> {
 /// ```
 /// # use merkledb::{
 /// #     access::CopyAccessExt, Database, TemporaryDB, BinaryValue, MapProof, ObjectHash,
+/// #     crypto::{hash, Hash},
 /// # };
-/// # use merkledb_crypto::hash;
 /// # fn main() -> anyhow::Result<()> {
 /// let fork = { let db = TemporaryDB::new(); db.fork() };
 /// let mut map = fork.get_proof_map("index");
@@ -233,9 +232,8 @@ impl<K, V> OptionalEntry<K, V> {
 /// # use serde_json::{self, json};
 /// # use merkledb::{
 /// #    access::CopyAccessExt, Database, TemporaryDB, BinaryValue, MapProof, HashTag,
-/// #    proof_map::{Hashed, ToProofPath},
+/// #    proof_map::{Hashed, ToProofPath}, crypto::hash,
 /// # };
-/// # use merkledb_crypto::hash;
 /// let fork = { let db = TemporaryDB::new(); db.fork() };
 /// let mut map = fork.get_proof_map("index");
 /// let (h1, h2) = (HashTag::hash_leaf(&[1]), HashTag::hash_leaf(&[2]));
@@ -524,8 +522,10 @@ where
     /// # Examples
     ///
     /// ```
-    /// # use merkledb::{access::CopyAccessExt, Database, TemporaryDB, ProofMapIndex, ObjectHash};
-    /// # use merkledb_crypto::hash;
+    /// # use merkledb::{
+    /// #     access::CopyAccessExt, Database, TemporaryDB, ProofMapIndex, ObjectHash,
+    /// #     crypto::hash,
+    /// # };
     /// let fork = { let db = TemporaryDB::new(); db.fork() };
     /// let mut map = fork.get_proof_map("index");
     /// let (h1, h2) = (hash(&[1]), hash(&[2]));

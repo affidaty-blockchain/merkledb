@@ -15,7 +15,6 @@
 use anyhow::{ensure, format_err};
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
 use enum_primitive_derive::Primitive;
-use merkledb_crypto::Hash;
 use num_traits::FromPrimitive;
 use serde_derive::{Deserialize, Serialize};
 
@@ -23,6 +22,7 @@ use std::{borrow::Cow, io::Error, mem, num::NonZeroU64, vec};
 
 use crate::{
     access::{AccessError, AccessErrorKind},
+    crypto::{self, Hash},
     validation::check_index_valid_full_name,
     views::{IndexAddress, RawAccess, RawAccessMut, ResolvedAddress, View},
     BinaryKey, BinaryValue,
@@ -113,7 +113,7 @@ impl BinaryAttribute for u64 {
 
 impl BinaryAttribute for Hash {
     fn size(&self) -> usize {
-        merkledb_crypto::HASH_SIZE
+        crypto::HASH_SIZE
     }
 
     fn write(&self, buffer: &mut Vec<u8>) {
@@ -127,7 +127,7 @@ impl BinaryAttribute for Hash {
                 format!(
                     "Invalid hash length ({}; {} expected)",
                     buffer.len(),
-                    merkledb_crypto::HASH_SIZE
+                    crypto::HASH_SIZE
                 ),
             )
         })

@@ -20,32 +20,11 @@
 //! cryptography applied in the system and add abstractions best
 //! suited for Exonum.
 
-#![warn(
-    missing_debug_implementations,
-    missing_docs,
-    unsafe_code,
-    bare_trait_objects
-)]
-#![warn(clippy::pedantic, clippy::nursery)]
-#![allow(
-    // Next `cast_*` lints don't give alternatives.
-    clippy::cast_possible_wrap, clippy::cast_possible_truncation, clippy::cast_sign_loss,
-    // Next lints produce too much noise/false positives.
-    clippy::module_name_repetitions, clippy::similar_names, clippy::must_use_candidate,
-    // '... may panic' lints.
-    clippy::indexing_slicing,
-    // Too much work to fix.
-    clippy::missing_errors_doc, clippy::missing_const_for_fn
-)]
-
-// #[macro_use]
-// extern crate serde_derive;
-
 #[cfg(feature = "sodiumoxide-crypto")]
 mod sodiumoxide;
 
 #[doc(inline)]
-pub use self::crypto_impl::HASH_SIZE;
+pub use crate::crypto::crypto_impl::HASH_SIZE;
 
 use hex::{encode as encode_hex, FromHex, FromHexError};
 use serde::{
@@ -61,12 +40,10 @@ use std::{
 
 // A way to set an active cryptographic backend is to export it as `crypto_impl`.
 #[cfg(feature = "sodiumoxide-crypto")]
-use crate::sodiumoxide as crypto_impl;
+use crate::crypto::sodiumoxide as crypto_impl;
 
 #[macro_use]
 mod macros;
-
-//pub(crate) mod crypto_lib;
 
 /// The size to crop the string in debug messages.
 const BYTES_IN_DEBUG: usize = 4;
@@ -92,9 +69,9 @@ fn write_short_hex(f: &mut impl fmt::Write, slice: &[u8]) -> fmt::Result {
 /// The example below calculates the hash of the indicated data.
 ///
 /// ```
-/// # merkledb_crypto::init();
+/// # merkledb::crypto::init();
 /// let data = [1, 2, 3];
-/// let hash = merkledb_crypto::hash(&data);
+/// let hash = merkledb::crypto::hash(&data);
 /// ```
 pub fn hash(data: &[u8]) -> Hash {
     let dig = crypto_impl::hash(data);
@@ -110,7 +87,7 @@ pub fn hash(data: &[u8]) -> Hash {
 /// # Examples
 ///
 /// ```
-/// merkledb_crypto::init();
+/// merkledb::crypto::init();
 /// ```
 pub fn init() {
     if !crypto_impl::init() {
@@ -131,7 +108,7 @@ pub fn init() {
 /// and calculates the resulting hash of the system.
 ///
 /// ```rust
-/// use merkledb_crypto::HashStream;
+/// use merkledb::crypto::HashStream;
 ///
 /// let data: Vec<[u8; 5]> = vec![[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]];
 /// let mut hash_stream = HashStream::new();
@@ -169,29 +146,10 @@ impl HashStream {
     }
 }
 
-implement_public_crypto_wrapper! {
-/// The result of applying the SHA-256 hash function to data.
-///
-/// This function splits the input data into blocks and runs each block
-/// through a cycle of 64 iterations. The result of the function is a hash
-/// 256 bits or 32 bytes in length.
-///
-/// # Examples
-///
-/// The example below generates the hash of the indicated data.
-///
-/// ```
-/// use merkledb_crypto::Hash;
-///
-/// let data = [1, 2, 3];
-/// let hash_from_data = merkledb_crypto::hash(&data);
-/// let default_hash = Hash::default();
-/// ```
-    struct Hash, HASH_SIZE
-}
+implement_public_crypto_wrapper! { struct Hash, HASH_SIZE }
 
-implement_serde! {Hash}
-implement_index_traits! {Hash}
+implement_serde! { Hash }
+implement_index_traits! { Hash }
 
 #[cfg(test)]
 mod tests {

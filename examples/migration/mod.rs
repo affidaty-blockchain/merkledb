@@ -24,7 +24,6 @@
 //! 3. We complete the migration by calling `flush_migration`. This moves the migrated data
 //!   to its intended place and removes the old data marked for removal.
 
-use merkledb_crypto::{Hash, HASH_SIZE};
 use merkledb_derive::{BinaryValue, FromAccess, ObjectHash};
 use rand::{seq::SliceRandom, thread_rng, Rng};
 use serde_derive::{Deserialize, Serialize};
@@ -33,6 +32,7 @@ use std::sync::Arc;
 
 use merkledb::{
     access::{Access, CopyAccessExt, FromAccess, Prefixed},
+    crypto::{Hash, HASH_SIZE},
     migration::{flush_migration, Migration},
     BinaryKey, BinaryValue, Database, Entry, Group, ListIndex, MapIndex, ObjectHash, ProofEntry,
     ProofListIndex, ProofMapIndex, Snapshot, SystemSchema, TemporaryDB,

@@ -15,79 +15,79 @@
 //! Common macros for crypto module.
 
 macro_rules! implement_public_crypto_wrapper {
-    ($(#[$attr:meta])* struct $name:ident, $size:expr) => (
-    #[derive(PartialEq, Eq, Clone, Copy, PartialOrd, Ord, Hash)]
-    $(#[$attr])*
-    pub struct $name($crate::crypto_impl::$name);
+    ($(#[$attr:meta])* struct $name:ident, $size:expr) => {
+        /// Cryptographic primitive implementation newtype.
+        #[derive(PartialEq, Eq, Clone, Copy, PartialOrd, Ord, Hash)]
+        $(#[$attr])*
+        pub struct $name($crate::crypto::crypto_impl::$name);
 
-    impl $name {
-        /// Creates a new instance filled with zeros.
-        pub fn zero() -> Self {
-            $name::new([0; $size])
-        }
-    }
-
-    impl $name {
-        /// Creates a new instance from bytes array.
-        pub fn new(bytes_array: [u8; $size]) -> Self {
-            $name($crate::crypto_impl::$name(bytes_array))
+        impl $name {
+            /// Creates a new instance filled with zeros.
+            pub fn zero() -> Self {
+                $name::new([0; $size])
+            }
         }
 
-        /// Creates a new instance from bytes slice.
-        pub fn from_slice(bytes_slice: &[u8]) -> Option<Self> {
-            $crate::crypto_impl::$name::from_slice(bytes_slice).map($name)
+        impl $name {
+            /// Creates a new instance from bytes array.
+            pub fn new(bytes_array: [u8; $size]) -> Self {
+                $name($crate::crypto::crypto_impl::$name(bytes_array))
+            }
+
+            /// Creates a new instance from bytes slice.
+            pub fn from_slice(bytes_slice: &[u8]) -> Option<Self> {
+                $crate::crypto::crypto_impl::$name::from_slice(bytes_slice).map($name)
+            }
+
+            /// Copies bytes from this instance.
+            pub fn as_bytes(&self) -> [u8; $size] {
+                (self.0).0
+            }
+
+            /// Returns a hex representation of binary data.
+            /// Lower case letters are used (e.g. `f9b4ca`).
+            pub fn to_hex(&self) -> String {
+                $crate::crypto::encode_hex(self)
+            }
         }
 
-        /// Copies bytes from this instance.
-        pub fn as_bytes(&self) -> [u8; $size] {
-            (self.0).0
+        impl AsRef<[u8]> for $name {
+            fn as_ref(&self) -> &[u8] {
+                self.0.as_ref()
+            }
         }
 
-        /// Returns a hex representation of binary data.
-        /// Lower case letters are used (e.g. `f9b4ca`).
-        pub fn to_hex(&self) -> String {
-            $crate::encode_hex(self)
+        impl Default for $name {
+            fn default() -> Self {
+                Self::zero()
+            }
         }
-    }
 
-    impl AsRef<[u8]> for $name {
-        fn as_ref(&self) -> &[u8] {
-            self.0.as_ref()
+        impl fmt::Debug for $name {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                let mut hex = String::with_capacity($crate::crypto::BYTES_IN_DEBUG + $crate::crypto::BYTES_IN_ELLIPSIS);
+                $crate::crypto::write_short_hex(&mut hex, &self[..])?;
+
+                f.debug_tuple(stringify!($name))
+                    .field(&hex)
+                    .finish()
+            }
         }
-    }
 
-    impl Default for $name {
-        fn default() -> Self {
-            Self::zero()
+        impl fmt::Display for $name {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.write_str(&self.to_hex())
+            }
         }
-    }
 
-    impl fmt::Debug for $name {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            let mut hex = String::with_capacity($crate::BYTES_IN_DEBUG + $crate::BYTES_IN_ELLIPSIS);
-            $crate::write_short_hex(&mut hex, &self[..])?;
+        impl std::str::FromStr for $name {
+            type Err = hex::FromHexError;
 
-            f.debug_tuple(stringify!($name))
-                .field(&hex)
-                .finish()
+            fn from_str(s: &str) -> Result<Self, Self::Err> {
+                Self::from_hex(s)
+            }
         }
-    }
-
-    impl fmt::Display for $name {
-        fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            f.write_str(&self.to_hex())
-        }
-    }
-
-    impl std::str::FromStr for $name {
-        type Err = hex::FromHexError;
-
-        fn from_str(s: &str) -> Result<Self, Self::Err> {
-            Self::from_hex(s)
-        }
-    }
-
-    )
+    };
 }
 
 macro_rules! implement_serde {

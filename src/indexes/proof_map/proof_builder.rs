@@ -17,14 +17,12 @@
 
 use std::borrow::Borrow;
 
-use merkledb_crypto::Hash;
-
 use super::{
     key::{BitsRange, ChildKind, ProofPath},
     node::{BranchNode, Node},
     MapProof, ToProofPath,
 };
-use crate::BinaryKey;
+use crate::{crypto::Hash, BinaryKey};
 
 // Expected size of the proof, in number of hashed entries.
 const DEFAULT_PROOF_CAPACITY: usize = 8;

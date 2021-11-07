@@ -17,10 +17,11 @@ use smallvec::{smallvec, SmallVec};
 
 use std::borrow::Cow;
 
-use merkledb_crypto::{self, Hash, HASH_SIZE};
-
 use super::key::{ChildKind, ProofPath, PROOF_PATH_SIZE};
-use crate::{BinaryKey, BinaryValue, HashTag, ObjectHash};
+use crate::{
+    crypto::{Hash, HASH_SIZE},
+    BinaryKey, BinaryValue, HashTag, ObjectHash,
+};
 
 const BRANCH_NODE_SIZE: usize = 2 * (HASH_SIZE + PROOF_PATH_SIZE);
 
@@ -131,15 +132,15 @@ impl std::fmt::Debug for BranchNode {
 
 #[cfg(test)]
 mod tests {
-    use super::{merkledb_crypto, BranchNode, ChildKind, ProofPath};
-    use crate::{proof_map::key::BitsRange, BinaryValue, ObjectHash};
+    use super::{BranchNode, ChildKind, ProofPath};
+    use crate::{crypto, proof_map::key::BitsRange, BinaryValue, ObjectHash};
 
     #[test]
     fn test_branch_node_layout() {
         let mut branch = BranchNode::empty();
 
-        let lh = merkledb_crypto::hash(&[1, 2]);
-        let rh = merkledb_crypto::hash(&[3, 4]);
+        let lh = crypto::hash(&[1, 2]);
+        let rh = crypto::hash(&[3, 4]);
         let ls = ProofPath::from_bytes(&[253; 32]);
         let rs = ProofPath::from_bytes(&[244; 32]);
 
@@ -156,8 +157,8 @@ mod tests {
     fn test_branch_node_storage_value() {
         let mut branch = BranchNode::empty();
 
-        let lh = merkledb_crypto::hash(&[1, 2]);
-        let rh = merkledb_crypto::hash(&[3, 4]);
+        let lh = crypto::hash(&[1, 2]);
+        let rh = crypto::hash(&[3, 4]);
         let ls = ProofPath::from_bytes(&[253; 32]).suffix(9).prefix(15);
         let rs = ProofPath::from_bytes(&[244; 32]);
 

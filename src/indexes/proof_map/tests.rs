@@ -14,7 +14,6 @@
 
 #![allow(clippy::too_many_lines)]
 
-use merkledb_crypto::{hash, Hash, HashStream, HASH_SIZE};
 use pretty_assertions::assert_eq;
 use rand::{
     self,
@@ -33,6 +32,7 @@ use super::{
 };
 use crate::{
     access::CopyAccessExt,
+    crypto::{hash, Hash, HashStream, HASH_SIZE},
     proof_map::{Hashed, ProofMapIndex, Raw, ToProofPath},
     BinaryKey, BinaryValue, Database, Fork, HashTag, ObjectHash, TemporaryDB,
 };
@@ -1604,9 +1604,9 @@ fn restore_after_no_op_initialization() {
 
 #[test]
 fn test_tree_with_hashed_key() {
+    use crate::crypto::Hash;
     use anyhow::ensure;
     use byteorder::{ByteOrder, LittleEndian};
-    use merkledb_crypto::Hash;
 
     use std::{borrow::Cow, iter::FromIterator};
 
@@ -1661,7 +1661,7 @@ fn test_tree_with_hashed_key() {
         fn object_hash(&self) -> Hash {
             let mut buffer = [0; 4];
             self.write(&mut buffer);
-            merkledb_crypto::hash(&buffer)
+            crate::crypto::hash(&buffer)
         }
     }
 

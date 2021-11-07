@@ -127,7 +127,6 @@
 
 pub use self::persistent_iter::{PersistentIter, PersistentIters, PersistentKeys};
 
-use merkledb_crypto::Hash;
 use thiserror::Error;
 
 use std::{
@@ -140,6 +139,7 @@ use std::{
 
 use crate::{
     access::{Access, AccessError, Prefixed, RawAccess},
+    crypto::Hash,
     validation::{assert_valid_name_component, check_index_valid_full_name},
     views::{
         get_state_aggregator, AsReadonly, GroupKeys, IndexAddress, IndexMetadata, IndexType,

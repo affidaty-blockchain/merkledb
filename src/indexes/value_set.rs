@@ -20,10 +20,9 @@
 
 use std::marker::PhantomData;
 
-use merkledb_crypto::Hash;
-
 use crate::{
     access::{Access, AccessError, FromAccess},
+    crypto::Hash,
     indexes::iter::{Entries, IndexIterator, Keys},
     views::{IndexAddress, IndexType, RawAccess, RawAccessMut, View, ViewWithMetadata},
     BinaryValue, ObjectHash,
@@ -89,15 +88,14 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex};
-    /// use merkledb_crypto;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex, crypto};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
     /// let mut index = fork.get_value_set("name");
     ///
     /// let data = vec![1, 2, 3];
-    /// let data_hash = merkledb_crypto::hash(&data);
+    /// let data_hash = crypto::hash(&data);
     /// assert!(!index.contains_by_hash(&data_hash));
     ///
     /// index.insert(data);
@@ -152,8 +150,10 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{
+    ///     access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex,
+    ///     crypto::Hash,
+    /// };
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -175,8 +175,10 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{
+    ///     access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex,
+    ///     crypto::Hash,
+    /// };
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -242,15 +244,16 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex};
-    /// use merkledb_crypto;
+    /// use merkledb::{
+    ///     access::CopyAccessExt, TemporaryDB, Database, ValueSetIndex, crypto,
+    /// };
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
     /// let mut index = fork.get_value_set("name");
     ///
     /// let data = vec![1, 2, 3];
-    /// let data_hash = merkledb_crypto::hash(&data);
+    /// let data_hash = crypto::hash(&data);
     /// index.insert(data);
     /// assert!(index.contains_by_hash(&data_hash));
     ///

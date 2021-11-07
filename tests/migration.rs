@@ -8,7 +8,6 @@
 //! be fine if the test passes, but can lead to weird errors if it fails. In this case,
 //! move database initialization inside the test to extract the sequence of actions failing the test.
 
-use merkledb_crypto::Hash;
 use proptest::{
     bool,
     collection::vec,
@@ -21,6 +20,7 @@ use std::collections::{HashMap, HashSet};
 
 use merkledb::{
     access::{Access, AccessExt},
+    crypto::Hash,
     migration::{flush_migration, rollback_migration, Migration},
     Database, HashTag, IndexAddress, IndexType, ObjectHash, Snapshot, SystemSchema, TemporaryDB,
 };

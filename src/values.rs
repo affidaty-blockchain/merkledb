@@ -22,9 +22,10 @@ use chrono::{DateTime, NaiveDateTime, Utc};
 use rust_decimal::Decimal;
 use uuid::Uuid;
 
-use merkledb_crypto::{Hash, HASH_SIZE};
-
-use crate::ObjectHash;
+use crate::{
+    crypto::{Hash, HASH_SIZE},
+    ObjectHash,
+};
 
 /// A type that can be (de)serialized as a value in the blockchain storage.
 ///

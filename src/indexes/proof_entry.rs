@@ -16,10 +16,9 @@
 
 use std::marker::PhantomData;
 
-use merkledb_crypto::Hash;
-
 use crate::{
     access::{Access, AccessError, FromAccess},
+    crypto::Hash,
     views::{IndexAddress, IndexState, IndexType, RawAccess, RawAccessMut, View, ViewWithMetadata},
     BinaryValue, ObjectHash,
 };
@@ -208,8 +207,7 @@ where
 /// # Examples
 ///
 /// ```
-/// # use merkledb::{access::CopyAccessExt, TemporaryDB, Database, Entry, ObjectHash};
-/// # use merkledb_crypto::{self, Hash};
+/// # use merkledb::{access::CopyAccessExt, TemporaryDB, Database, Entry, ObjectHash, crypto::{self, Hash}};
 /// let db = TemporaryDB::new();
 /// let fork = db.fork();
 /// let mut index = fork.get_proof_entry("name");
@@ -217,7 +215,7 @@ where
 ///
 /// let value = 10;
 /// index.set(value);
-/// assert_eq!(merkledb_crypto::hash(&[value]), index.object_hash());
+/// assert_eq!(crypto::hash(&[value]), index.object_hash());
 /// ```
 impl<T, V> ObjectHash for ProofEntry<T, V>
 where
@@ -232,7 +230,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::{BinaryValue, Hash, ObjectHash};
-    use crate::{access::CopyAccessExt, Database, TemporaryDB};
+    use crate::{access::CopyAccessExt, crypto, Database, TemporaryDB};
     use std::borrow::Cow;
 
     #[test]
@@ -272,7 +270,7 @@ mod tests {
 
         impl ObjectHash for CustomHash {
             fn object_hash(&self) -> Hash {
-                Hash::new([self.0; merkledb_crypto::HASH_SIZE])
+                Hash::new([self.0; crypto::HASH_SIZE])
             }
         }
 
@@ -288,9 +286,6 @@ mod tests {
 
         let snapshot = db.snapshot();
         let entry = snapshot.get_proof_entry::<_, ()>("test");
-        assert_eq!(
-            entry.object_hash(),
-            Hash::new([11; merkledb_crypto::HASH_SIZE])
-        );
+        assert_eq!(entry.object_hash(), Hash::new([11; crypto::HASH_SIZE]));
     }
 }

@@ -14,7 +14,6 @@
 
 pub use crate::ValidationError;
 
-use merkledb_crypto::Hash;
 use serde_derive::{Deserialize, Serialize};
 use thiserror::Error;
 
@@ -24,7 +23,7 @@ use super::{
     key::{ProofListKey, MAX_INDEX},
     tree_height_by_length,
 };
-use crate::{BinaryValue, HashTag};
+use crate::{crypto::Hash, BinaryValue, HashTag};
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct HashedEntry {
@@ -446,7 +445,7 @@ impl<V: BinaryValue> ListProof<V> {
     }
 
     /// Provides access to the proof part of the view. Used in serialization.
-    pub(crate) fn proof_unchecked(&self) -> &[HashedEntry] {
+    pub fn proof_unchecked(&self) -> &[HashedEntry] {
         &self.proof
     }
 
@@ -551,11 +550,7 @@ impl<V: BinaryValue> ListProof<V> {
 
     /// Creates `ListProof` from `proof` and `entries` vectors. Used to construct proof
     /// after deserialization.
-    pub(crate) fn from_raw_parts(
-        proof: Vec<HashedEntry>,
-        entries: Vec<(u64, V)>,
-        length: u64,
-    ) -> Self {
+    pub fn from_raw_parts(proof: Vec<HashedEntry>, entries: Vec<(u64, V)>, length: u64) -> Self {
         Self {
             proof,
             entries,

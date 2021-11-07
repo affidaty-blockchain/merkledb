@@ -20,8 +20,6 @@ pub use self::{
     proof::{CheckedMapProof, MapProof, MapProofError, ValidationError},
 };
 
-use merkledb_crypto::Hash;
-
 use std::{fmt, io, marker::PhantomData};
 
 use self::{
@@ -31,6 +29,7 @@ use self::{
 };
 use crate::{
     access::{Access, AccessError, FromAccess},
+    crypto::Hash,
     indexes::iter::{Entries, IndexIterator, Keys, Values},
     views::{
         BinaryAttribute, IndexAddress, IndexState, IndexType, RawAccess, RawAccessMut, View,
@@ -207,8 +206,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -229,8 +227,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -251,8 +248,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -289,8 +285,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -309,8 +304,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -329,8 +323,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -350,8 +343,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -372,8 +364,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -394,8 +385,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -555,8 +545,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -628,8 +617,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -693,8 +681,7 @@ where
     /// # Examples
     ///
     /// ```
-    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex};
-    /// use merkledb_crypto::Hash;
+    /// use merkledb::{access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, crypto::Hash};
     ///
     /// let db = TemporaryDB::new();
     /// let fork = db.fork();
@@ -779,8 +766,8 @@ where
 /// ```
 /// # use merkledb::{
 /// #     access::CopyAccessExt, TemporaryDB, Database, ProofMapIndex, HashTag, ObjectHash,
+/// #     crypto::Hash
 /// # };
-/// # use merkledb_crypto::Hash;
 /// let db = TemporaryDB::new();
 /// let fork = db.fork();
 /// let mut index = fork.get_proof_map("name");

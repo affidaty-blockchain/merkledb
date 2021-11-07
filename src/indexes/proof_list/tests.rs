@@ -16,14 +16,15 @@
 
 #![allow(clippy::too_many_lines)]
 
-use merkledb_crypto::Hash;
 use rand::{thread_rng, Rng};
 use serde_json::{self, json};
 
 use std::cmp;
 
 use super::{key::ProofListKey, tree_height_by_length, ListProof, ListProofError, ProofListIndex};
-use crate::{access::CopyAccessExt, BinaryValue, Database, HashTag, ObjectHash, TemporaryDB};
+use crate::{
+    access::CopyAccessExt, crypto::Hash, BinaryValue, Database, HashTag, ObjectHash, TemporaryDB,
+};
 
 const IDX_NAME: &str = "idx_name";
 
@@ -1147,9 +1148,11 @@ fn proof_with_out_of_bound_elements() {
 
 mod root_hash {
     use crate::{
-        access::CopyAccessExt, hash::HashTag, BinaryValue, Database, ObjectHash, TemporaryDB,
+        access::CopyAccessExt,
+        crypto::{self, Hash},
+        hash::HashTag,
+        BinaryValue, Database, ObjectHash, TemporaryDB,
     };
-    use merkledb_crypto::{self, Hash};
 
     /// Cross-verify `object_hash()` with `ProofListIndex` against expected root hash value.
     fn assert_object_hash_correct<V>(values: &[V])
@@ -1173,10 +1176,7 @@ mod root_hash {
     }
 
     fn to_list_of_hashes(bytes: &[&[u8]]) -> Vec<Hash> {
-        bytes
-            .iter()
-            .map(|chunk| merkledb_crypto::hash(chunk))
-            .collect()
+        bytes.iter().map(|chunk| crypto::hash(chunk)).collect()
     }
 
     #[test]

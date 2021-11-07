@@ -48,7 +48,7 @@ macro_rules! impl_object_hash_for_binary_value {
             #[allow(clippy::use_self)] // false positive
             impl ObjectHash for $type {
                 fn object_hash(&self) -> Hash {
-                    merkledb_crypto::hash(&$crate::BinaryValue::to_bytes(self))
+                    $crate::crypto::hash(&$crate::BinaryValue::to_bytes(self))
                 }
             }
         )*

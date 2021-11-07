@@ -25,9 +25,10 @@ use std::{
     ops,
 };
 
-use merkledb_crypto::{Hash, HASH_SIZE};
-
-use crate::{BinaryKey, ObjectHash};
+use crate::{
+    crypto::{Hash, HASH_SIZE},
+    BinaryKey, ObjectHash,
+};
 
 /// This prefix defines a node as a branch.
 pub const BRANCH_KEY_PREFIX: u8 = 0;
@@ -482,7 +483,7 @@ impl ProofPath {
 
     /// Returns bits in the path expressed as the minimum necessary number of bytes
     /// and zero-padded if necessary.
-    pub(crate) fn path_bits(&self) -> Vec<u8> {
+    pub fn path_bits(&self) -> Vec<u8> {
         let bits_len = self.end() as usize;
         let whole_bytes_len = div_ceil!(bits_len, 8);
         let mut key = self.raw_key()[0..whole_bytes_len].to_vec();

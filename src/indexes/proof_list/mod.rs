@@ -16,8 +16,6 @@
 
 pub use self::proof::{CheckedListProof, ListProof, ListProofError, ValidationError};
 
-use merkledb_crypto::Hash;
-
 use std::{cmp, iter, marker::PhantomData, ops::RangeBounds};
 
 use self::{
@@ -26,6 +24,7 @@ use self::{
 };
 use crate::{
     access::{Access, AccessError, FromAccess},
+    crypto::Hash,
     hash::HashTag,
     indexes::iter::{Entries, IndexIterator, Values},
     views::{IndexState, IndexType, RawAccess, RawAccessMut, View, ViewWithMetadata},
@@ -725,8 +724,8 @@ where
 /// ```
 /// # use merkledb::{
 /// #     access::CopyAccessExt, TemporaryDB, Database, ProofListIndex, HashTag, ObjectHash,
+/// #     crypto::Hash,
 /// # };
-/// # use merkledb_crypto::Hash;
 /// let db = TemporaryDB::new();
 /// let fork = db.fork();
 /// let mut index = fork.get_proof_list("name");
