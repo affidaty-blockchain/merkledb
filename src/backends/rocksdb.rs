@@ -105,7 +105,8 @@ impl RocksDB {
     ///
     /// [`RocksDB` docs]: https://github.com/facebook/rocksdb/wiki/Checkpoints
     pub fn create_checkpoint<T: AsRef<Path>>(&self, path: T) -> crate::Result<()> {
-        let checkpoint = Checkpoint::new(&*self.get_lock_guard())?;
+        let lockguard = &*self.get_lock_guard();
+        let checkpoint = Checkpoint::new(lockguard)?;
         checkpoint.create_checkpoint(path)?;
         Ok(())
     }
@@ -141,10 +142,11 @@ impl RocksDB {
                 // This is specific to the debug mode, but since `TemporaryDB`
                 // is mostly used for testing, this optimization leads to practical
                 // performance improvement.
+                let from: &[u8] = &[];
                 if key.len() < LARGER_KEY.len() {
-                    batch.delete_range_cf::<&[u8]>(cf, &[], LARGER_KEY);
+                    batch.delete_range_cf(cf, from, LARGER_KEY);
                 } else {
-                    batch.delete_range_cf::<&[u8]>(cf, &[], key);
+                    batch.delete_range_cf(cf, from, key);
                     batch.delete_cf(cf, &key);
                 }
             }

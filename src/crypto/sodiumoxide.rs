@@ -27,22 +27,16 @@
 //! fast signing and key generation, as well as security and collision
 //! resilience.
 
-// spell-checker:ignore DIGESTBYTES, PUBLICKEYBYTES, SECRETKEYBYTES, SEEDBYTES, SIGNATUREBYTES
-
-//use exonum_sodiumoxide as sodiumoxide;
 pub use sodiumoxide::crypto::hash::sha256;
 
 /// Digest type for sodiumoxide-based implementation.
-//pub use sha256::Digest as Hash;
 pub use self::sha256::Digest as Hash;
 
 /// Contains the state for multi-part (streaming) hash computations
 /// for sodiumoxide-based implementation.
-//pub use sha256::State as HashState;
 pub use self::sha256::State as HashState;
 
 /// Number of bytes in a `Hash`.
-//pub const HASH_SIZE: usize = sha256::DIGESTBYTES;
 pub const HASH_SIZE: usize = self::sha256::DIGESTBYTES;
 
 /// Initializes the sodium library and automatically selects faster versions
