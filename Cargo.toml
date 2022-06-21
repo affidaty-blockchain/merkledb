@@ -2,7 +2,10 @@
 name = "merkledb"
 version = "0.1.1"
 edition = "2021"
-authors = ["The Exonum Team <contact@exonum.com>", "The Trinci Team <info@affidaty.io>"]
+authors = [
+    "The Exonum Team <contact@exonum.com>",
+    "The Trinci Team <info@affidaty.io>",
+]
 homepage = "https://exonum.com/"
 repository = "https://github.com/affidaty-blockchain/merkledb"
 documentation = "https://docs.rs/exonum-merkledb"
@@ -16,19 +19,19 @@ description = "Persistent storage implementation based on RocksDB which provides
 [dependencies]
 anyhow = "1.0"
 byteorder = "1.3"
-chrono = "0.4.6"
+chrono = "0.4"
 crossbeam = "0.8.0"
 enum-primitive-derive = "0.2"
 leb128 = "0.2"
 num-traits = "0.2"
-rocksdb = { version = "0.17.0", default-features = false }
+rocksdb = { version = "0.18.0", default-features = false }
 rust_decimal = "1.0"
 serde = "1.0"
 serde_derive = "1.0"
 smallvec = "1.6"
 tempfile = "3.2"
 thiserror = "1.0"
-uuid = { version = "0.8", features = ["v4"] }
+uuid = { version = "1.1.2", features = ["v4"] }
 hex = "0.4.2"
 sodiumoxide = { version = "0.2.7", optional = true }
 
@@ -53,7 +56,7 @@ harness = false
 
 [features]
 default = ["rocksdb_snappy", "sodiumoxide-crypto"]
-sodiumoxide-crypto = [ "sodiumoxide" ]
+sodiumoxide-crypto = ["sodiumoxide"]
 with-serde = []
 
 # Compression options passed to RocksDB backend.
